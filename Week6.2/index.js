@@ -116,6 +116,10 @@ app.post("/signin", (req, res) => {
   }
 });
 
+app.get("/me", (req, res) => {
+  res.send("Hellow");
+});
+
 app.listen(3000, () => {
   console.log("Server is listening to port 3000");
 });
