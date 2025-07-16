@@ -8,6 +8,37 @@ app.use(express.json());
 
 let users = [];
 
+function auth(req, res, next) {
+  // Get token from Authorization header
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN
+
+  // If no token provided
+  if (!token) {
+    return res.status(401).json({
+      message: "Access token required",
+    });
+  }
+
+  try {
+    // Verify the token
+    const decodedData = jwt.verify(token, JWT_SECRET);
+
+    if (decodedData.username) {
+      req.username = decodedData.username;
+      next();
+    } else {
+      res.status(401).json({
+        message: "Invalid token",
+      });
+    }
+  } catch (error) {
+    res.status(401).json({
+      message: "Invalid or expired token",
+    });
+  }
+}
+
 app.post("/signup", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -16,7 +47,7 @@ app.post("/signup", (req, res) => {
     res.json({
       message: "Username not available",
     });
-    return; // Important: return here to prevent further execution
+    return;
   }
 
   users.push({
@@ -25,7 +56,7 @@ app.post("/signup", (req, res) => {
   });
 
   res.json({
-    meassge: "Account Created Succesfully",
+    message: "Account Created Successfully", // Fixed typo
   });
 });
 
@@ -33,66 +64,38 @@ app.post("/signin", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  // Find user with matching credentials
   const user = users.find(
     (user) => user.username === username && user.password === password
   );
 
   if (user) {
-    // ✅ User found - create JWT token
-    const token = jwt.sign(
-      { username: username }, // Only include username, not password
-      JWT_SECRET
-    );
+    const token = jwt.sign({ username: username }, JWT_SECRET);
 
-    // ✅ Send success response with token
     res.json({
       message: "Login successful",
       token: token,
     });
-    return; // ✅ Important: stop execution here
+    return;
   }
 
-  // ✅ Only runs if user NOT found
   res.json({
     message: "Invalid Credentials",
   });
 });
 
-app.get("/me", (req, res) => {
-  const token = req.headers.token;
+app.get("/me", auth, (req, res) => {
+  // Fixed: use req.username instead of req.user.username
+  const user = users.find((user) => user.username === req.username);
 
-  // ✅ Check if token exists
-  if (!token) {
-    return res.status(401).json({
-      message: "No token provided",
+  if (user) {
+    res.json({
+      username: user.username,
+      // Don't return password for security
+      message: "User found",
     });
-  }
-
-  try {
-    // ✅ Verify token with error handling
-    const decodedData = jwt.verify(token, JWT_SECRET);
-
-    // ✅ Find user using the decoded username
-    const user = users.find((user) => user.username === decodedData.username);
-
-    if (user) {
-      // ✅ Return user info (without password for security)
-      res.json({
-        username: user.username,
-        // Don't return password for security reasons
-        message: "User found",
-      });
-    } else {
-      // ✅ User not found in database
-      res.status(404).json({
-        message: "User not found",
-      });
-    }
-  } catch (error) {
-    // ✅ Handle invalid/expired token
-    res.status(401).json({
-      message: "Invalid or expired token",
+  } else {
+    res.status(404).json({
+      message: "User not found",
     });
   }
 });
