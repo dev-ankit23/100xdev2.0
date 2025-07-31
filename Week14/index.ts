@@ -72,18 +72,34 @@
 //   }
 // }
 
-interface people {
-  name: string;
+// interface people {
+//   name: string;
+//   age: number;
+//   greet: () => string;
+// }
+
+// let person: people = {
+//   name: "ankit",
+//   age: 21,
+//   greet: () => {
+//     return person.name;
+//   },
+// };
+
+// console.log(person.gree
+// t());
+
+interface Admin {
+  name: "string";
+  permision: "string";
+}
+interface User {
+  name: "string";
   age: number;
-  greet: () => string;
 }
 
-let person: people = {
-  name: "ankit",
-  age: 21,
-  greet: () => {
-    return person.name;
-  },
-};
+type UserorAdmin = User | Admin;
 
-console.log(person.greet());
+function greet(user: UserorAdmin) {
+  console.log(user.name);
+}
