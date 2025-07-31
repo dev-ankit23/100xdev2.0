@@ -89,17 +89,42 @@
 // console.log(person.gree
 // t());
 
-interface Admin {
-  name: "string";
-  permision: "string";
-}
+// interface Admin {
+//   name: "string";
+//   permision: "string";
+// }
+// interface User {
+//   name: "string";
+//   age: number;
+// }
+
+// type UserorAdmin = User | Admin;
+
+// function greet(user: UserorAdmin) {
+//   console.log(user.name);
+// }
+
 interface User {
-  name: "string";
+  firstname: String;
+  lastname: String;
   age: number;
 }
 
-type UserorAdmin = User | Admin;
-
-function greet(user: UserorAdmin) {
-  console.log(user.name);
+function filteredUsers(user: User[]) {
+  return user.filter((x) => x.age > 18);
 }
+
+console.log(
+  filteredUsers([
+    {
+      firstname: "harkirat",
+      lastname: "Singh",
+      age: 21,
+    },
+    {
+      firstname: "Raman",
+      lastname: "Singh",
+      age: 16,
+    },
+  ])
+);

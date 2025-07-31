@@ -1,10 +1,17 @@
 "use strict";
 // Gretting Fucntion
-let person = {
-    name: "ankit",
-    age: 21,
-    greet: () => {
-        return person.name;
+function filteredUsers(user) {
+    return user.filter((x) => x.age > 18);
+}
+console.log(filteredUsers([
+    {
+        firstname: "harkirat",
+        lastname: "Singh",
+        age: 21,
     },
-};
-console.log(person.greet());
+    {
+        firstname: "Raman",
+        lastname: "Singh",
+        age: 16,
+    },
+]));
