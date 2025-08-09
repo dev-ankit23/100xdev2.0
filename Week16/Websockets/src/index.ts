@@ -10,6 +10,8 @@ wss.on("connection", function (socket) {
       socket.send("pong");
     } else {
       socket.send("Enter ping to get the value");
+
+      // just for the github streak
     }
   });
 });
