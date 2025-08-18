@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-
+// streak should not be broken
 function App() {
   const [socket, setSocket] = useState();
   const inputRef = useRef();
