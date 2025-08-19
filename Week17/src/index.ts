@@ -16,3 +16,6 @@ async function main() {
 }
 
 main();
+
+
+// situation is bas right now
