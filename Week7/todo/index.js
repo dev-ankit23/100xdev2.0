@@ -7,7 +7,7 @@ const { JWT_SECERT, auth } = require("./auth");
 
 mongoose
   .connect(
-    "mongodb+srv://ankitmauryacoder:nqZrFW1HTnBMEFTo@cluster0.akv6x97.mongodb.net/TodoDB"
+   // add your connection string
   )
   .then(() => console.log("Connected!"))
   .catch((error) => console.log("Database connection failed:", error));
