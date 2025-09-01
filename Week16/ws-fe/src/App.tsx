@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+iimport { useEffect, useRef, useState } from "react";
 import "./App.css";
 // streak should not be broken
 function App() {
@@ -12,7 +12,8 @@ function App() {
     //@ts-expect-error
     socket.send(message);
   }
-
+// starting my new streak from September 
+  
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
     setSocket(ws);
